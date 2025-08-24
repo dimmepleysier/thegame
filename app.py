@@ -1,3 +1,4 @@
+import os
 import pymysql.cursors
 from flask import Flask, jsonify, request, render_template
 import random
@@ -7,10 +8,10 @@ app = Flask(__name__)
 
 # --- Database Connection Details ---
 DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'dimme',
-    'password': 'Telenet00',
-    'database': 'thegame',
+    'host': os.environ.get('DB_HOST'),
+    'user': os.environ.get('DB_USER'),
+    'password': os.environ.get('DB_PASSWORD'),
+    'database': os.environ.get('DB_NAME'),
     'cursorclass': pymysql.cursors.DictCursor
 }
 
