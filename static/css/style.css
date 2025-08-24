@@ -191,3 +191,23 @@ h1, h2, h3 {
     border-radius: 5px;
     font-size: 16px;
 }
+/* --- Responsive Styles for Mobile --- */
+@media (max-width: 768px) {
+    /* Welcome screen layout */
+    #welcome-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Game Over screen layout */
+    #game-over-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Make both sections full width on mobile */
+    .welcome-section, .game-over-section {
+        width: 95%;
+        margin-bottom: 20px; /* Add some space between stacked items */
+    }
+}
