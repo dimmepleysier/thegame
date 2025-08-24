@@ -206,13 +206,13 @@ h1, h2, h3 {
     }
 	    /* NEW: Reduce space between answer buttons */
     #answer-grid {
-        gap: 8px;
+        gap: 6px;
     }
 
     /* NEW: Make answer buttons a bit smaller */
     .answer-btn {
-        padding: 12px 8px;
+        padding: 12px 6px;
         font-size: 0.9em;
-        min-height: 50px;
+        min-height: 45px;
     }
 }
