@@ -1,0 +1,22 @@
+We are developing an online game. it is played as follows:
+
+* user presses some kind of start button on a welcome screen (to be embelished later)
+* a 90 second clock starts running relentlessly (no pausing)
+* an image is shown from a selection in a database (details later)
+* on the right hand side 8 tiles are shown (the correct one and one random one)
+* each title is also a button
+* if the user clicks the right button a 'congratulations' message is shown (should not cause any delay) and a next random question pops up, the user gets 10 points
+* if the wrong button is pressed the button is greyed out and no other button can be pressed for 3 seconds. per wrongly given answer the prize at the end is reduced with two points.
+* there is also a cheat button that removes four bad answers but this will take 5 seconds of the clock
+* when the time is up the total score is shown and a leaderboard is kept, the user can enter his/her name for the hall of fame.
+* the user also sees mini thumbnails of all the visuals he saw, with the right answer next to each one and the number of tries it took him to get it right
+* the bonus time gained (potentially) is also show
+* the cheats used are also mentioned in the overview
+* there is an extra bonus as soon as the user has 4 first time rights in a row: ten extra seconds on the clock and a congratulatory message (should not interrupt gameplay)
+* if you can add sound effect that would be amazing.
+* the theme is entertainment, the images shown are from famous movies and series (let this inspire you for the classy design you give to this game)
+* of course the questions are picked at random, the same question can not be asked twice in a single game and positions of the answers is random and so is the position of the right answer of course
+* assume you will be working locally for now: you will use the localhost database - dimme - Telenet00 and database thegame, table questions
+* this will have the references to a local image in a field called 'visual' (asume 16:9 format) and the right answer in a field called 'answer' (you should pick 7 other randomsly for the other buttons) (tbc if this can be done quickly enough on the fly)
+
+I propose a similar approach as our last project combining python, html, js and css ?

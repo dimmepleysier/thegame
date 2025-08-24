@@ -1,0 +1,23 @@
+/the-game-project/
+│
+├── app.py                      # (Persistent) Your main Python/Flask application logic.
+│
+├── /static/                    # Folder for all frontend assets.
+│   ├── /css/
+│   │   └── style.css           # (Persistent) All the styling for your game.
+│   │
+│   ├── /js/
+│   │   └── game.js             # (Persistent) All the JavaScript game logic.
+│   │
+│   ├── /images/                # (Persistent) All movie/series visual files.
+│   │   ├── pulp_fiction.jpg
+│   │   └── ...other_images.jpg
+│   │
+│   └── /sounds/                # (Persistent) All sound effect files.
+│       ├── correct.wav
+│       └── wrong.mp3
+│
+├── /templates/                 # Folder for all HTML files.
+│   └── index.html              # (Persistent) The single HTML file for your game.
+│
+└── db_setup.sql                # (One-Time Use) SQL script to create your tables.

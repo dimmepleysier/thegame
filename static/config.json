@@ -1,0 +1,20 @@
+{
+    "gameDuration": 60,
+    "pointsPerAnswer": 10,
+    "streakRequirement": 4,
+    "streakBonus": 10,
+    "penaltyPerWrongSeconds": 2,
+    "penaltyPerWrongPoints":3,
+    "cheatCost": 8,
+    "cheatAnswersRemoved": 4,
+    "leaderboardEntries": 8,
+    "sounds": {
+        "correct": "/static/sounds/correct.mp3",
+        "wrong": "/static/sounds/wrong.mp3",
+        "bonus": "/static/sounds/bonus.mp3",
+        "cheat": "/static/sounds/cheat.mp3",
+        "lobby": "/static/sounds/lobby.mp3",
+        "start": "/static/sounds/start.mp3",
+        "end": "/static/sounds/end.mp3"
+    }
+}

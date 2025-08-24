@@ -1,0 +1,193 @@
+/* Using CSS variables makes it easy to change the theme later */
+:root {
+    --bg-color: #141414;
+    --primary-text: #E5E5E5;
+    --accent-color: #E50914; /* A cinematic, Netflix-style red */
+    --gold-color: #FFD700;
+    --dark-grey: #222222;
+    --light-grey: #8c8c8c;
+    --correct-color: #4CAF50;
+    --incorrect-color: #B00020;
+    --danger-color: #881010;
+    --font-header: 'Playfair Display', serif;
+    --font-body: 'Montserrat', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* Prevents the whole page from scrolling */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--primary-text);
+    font-family: var(--font-body);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* --- Sound Toggle Button --- */
+.sound-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--light-grey);
+    background-color: var(--dark-grey);
+    color: var(--primary-text);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- Screen Management --- */
+.screen {
+    display: none;
+    width: 100%;
+    max-width: 900px;
+    max-height: 95vh; 
+    flex-direction: column;
+}
+
+.screen.active {
+    display: flex; /* The 'active' class makes a screen visible, using flexbox for layout */
+}
+
+.content-box {
+    background-color: var(--dark-grey);
+    padding: 20px 40px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #333;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    overflow-y: auto; /* Allow scrolling within this box if content overflows */
+}
+
+h1, h2, h3 {
+    font-family: var(--font-header);
+    color: var(--gold-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.hidden { display: none !important; }
+
+/* --- Buttons --- */
+.action-button, .utility-button {
+    cursor: pointer;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.2s ease-in-out;
+    margin: 5px;
+}
+
+.action-button { background-color: var(--accent-color); color: white; }
+.action-button:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.4); }
+.utility-button { background-color: var(--light-grey); color: #111; }
+.danger { background-color: var(--danger-color); color: white; }
+
+/* --- Welcome Screen Layout --- */
+.welcome-layout {
+    display: flex;
+    gap: 40px;
+    text-align: left;
+}
+.welcome-column {
+    flex: 1;
+}
+.welcome-column h1, .welcome-column p {
+    text-align: center;
+}
+.welcome-column .action-button {
+    display: block;
+    width: 80%;
+    margin: 20px auto 0 auto;
+}
+
+
+/* --- Game Rules Styles --- */
+#game-rules {
+    text-align: left;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #111;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+#game-rules h3 {
+    text-align: center;
+    margin-top: 0;
+    font-size: 1.2em;
+}
+#game-rules ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#game-rules li {
+    padding: 5px 0;
+}
+#game-rules strong {
+    color: var(--gold-color);
+}
+
+/* --- Leaderboard Styles --- */
+#leaderboard-container { text-align: left; }
+#leaderboard-list-welcome, #leaderboard-list-gameover { list-style: none; padding: 0; }
+.leaderboard-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #333; }
+.leaderboard-item:last-child { border-bottom: none; }
+.leaderboard-name { font-weight: bold; }
+.leaderboard-score { color: var(--gold-color); }
+
+
+/* --- Game Screen Specifics --- */
+#game-header { display: flex; justify-content: space-between; font-size: 24px; margin-bottom: 15px; padding: 10px 20px; background-color: var(--dark-grey); border-radius: 5px; flex-shrink: 0; }
+.hud-item span { color: var(--gold-color); font-weight: 700; }
+#visual-container { position: relative; margin-bottom: 15px; max-height: 50vh; }
+#question-image { width: 100%; height: 100%; max-height: 50vh; aspect-ratio: 16 / 9; object-fit: contain; border-radius: 8px; border: 2px solid #333; }
+#feedback-message { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 15px 30px; background-color: rgba(0,0,0,0.8); color: var(--gold-color); font-family: var(--font-header); font-size: 2.5em; border-radius: 5px; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 10; }
+#answer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; flex-grow: 1; min-height: 0; overflow-y: auto; padding-right: 5px; }
+.answer-btn { background-color: #333; color: var(--primary-text); padding: 15px 10px; border: 2px solid #555; border-radius: 5px; font-size: 1em; cursor: pointer; transition: all 0.2s ease; text-align: center; min-height: 60px; }
+.answer-btn:hover:not(:disabled) { background-color: #555; border-color: var(--gold-color); }
+.answer-btn.correct { background-color: var(--correct-color); border-color: #fff; color: #fff; }
+.answer-btn.incorrect { background-color: var(--incorrect-color); border-color: #fff; color: #fff; opacity: 0.6; }
+.answer-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+#game-footer { margin-top: 15px; text-align: center; flex-shrink: 0; }
+
+/* --- Game Over Screen Specifics --- */
+.game-over-layout { display: flex; gap: 40px; text-align: left; }
+.game-over-column { flex: 1; display: flex; flex-direction: column; }
+.final-score-text { text-align: center; font-size: 1.5em; }
+#game-summary { margin-top: 20px; text-align: left; }
+#summary-details { background-color: #111; padding: 10px; border-radius: 5px; margin-top: 10px; }
+.play-again-container { margin-top: auto; padding-top: 20px; text-align: center; }
+
+/* --- Modal Styles --- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 100; }
+.modal-content { background-color: var(--dark-grey); padding: 30px; border-radius: 8px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+.modal-buttons { margin-top: 20px; }
+#highscore-modal input {
+    display: block;
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid var(--light-grey);
+    background: #333;
+    color: var(--primary-text);
+    border-radius: 5px;
+    font-size: 16px;
+}
