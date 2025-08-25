@@ -95,19 +95,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playSound(sound) { if (!isMuted && sound) { sound.currentTime = 0; sound.play().catch(error => console.error(`Sound playback failed: ${error.message}`)); } }
     function stopSound(sound) { if (sound) { sound.pause(); sound.currentTime = 0; } }
+// --- NEW: Main Event Listener (Event Delegation) ---
+document.body.addEventListener('click', (event) => {
+    // Find the closest parent element that has an ID
+    const target = event.target.closest('[id]');
+    if (!target) return; // If nothing with an ID was clicked, do nothing
 
-    // --- 4. Event Listeners ---
-    buttons.start.addEventListener('click', startGame);
-    buttons.cheat.addEventListener('click', useCheat);
-    displays.answerGrid.addEventListener('click', handleAnswerClick);
-    buttons.saveScore.addEventListener('click', saveScore);
-    buttons.skipScore.addEventListener('click', showGameOverScreen);
-    buttons.quit.addEventListener('click', () => displays.quitModal.classList.remove('hidden'));
-    buttons.quitConfirmNo.addEventListener('click', () => displays.quitModal.classList.add('hidden'));
-    buttons.quitConfirmYes.addEventListener('click', quitGame);
-    buttons.playAgain.addEventListener('click', startGame);
-    buttons.playAgainExit.addEventListener('click', startGame);
-    buttons.soundToggle.addEventListener('click', toggleMute);
+    // Call the correct function based on the button's ID
+    switch (target.id) {
+        case 'start-button':
+        case 'play-again-button': // Combined play again buttons
+        case 'play-again-exit-button':
+            startGame();
+            break;
+        case 'cheat-button':
+            useCheat();
+            break;
+        case 'save-score-button':
+            saveScore();
+            break;
+        case 'skip-score-button':
+            showGameOverScreen();
+            break;
+        case 'quit-button':
+            displays.quitModal.classList.remove('hidden');
+            break;
+        case 'quit-confirm-no-button':
+            displays.quitModal.classList.add('hidden');
+            break;
+        case 'quit-confirm-yes-button':
+            quitGame();
+            break;
+        case 'sound-toggle-button':
+            toggleMute();
+            break;
+    }
+
+    // Special case for answer buttons since they share a class, not an ID
+    if (event.target.classList.contains('answer-btn')) {
+        handleAnswerClick(event);
+    }
+});
 
     // --- 5. Core Game Logic ---
     function switchScreen(screenName) {
