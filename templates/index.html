@@ -1,129 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie & Series Trivia</title>
-    
-    {% if platform == 'tv_app' %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/tv_app.css') }}">
-    {% else %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    {% endif %}
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie & Series Trivia</title>
+
+  {% if platform == 'tv_app' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tv_app.css') }}">
+  {% else %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% endif %}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
-							<body>
-								<!-- Sound Toggle Button -->
-								<button id="sound-toggle" class="sound-toggle-btn" tabindex="-1">🔇</button>
-								<button id="start-button" class="action-button" autofocus>Start Game</button>
-								<!-- Screen 1: Welcome Screen -->
-								<div id="welcome-screen" class="screen active">
-									<div class="content-box">
-										<!-- NEW: Two-column layout for welcome screen -->
-										<div class="welcome-layout">
-											<div class="welcome-column">
-												<h1>Movie & Series Trivia</h1>
-												<p>Guess the title from the image. You have <span id="welcome-duration">--</span> seconds. Good luck!</p>
-												<div id="game-rules">
-													<h3>How to Play</h3>
-													<ul>
-														<li>✅ <strong>+<span id="config-points">--</span> points</strong> for a correct answer.</li>
-														<li> streaks of <span id="config-streak-req">--</span> grant a <strong>+<span id="config-streak-bonus">--</span> second</strong> time bonus.</li>
-														<li>❌ Each wrong answer adds a <strong>
-																<span id="config-penalty-time">--</span>s</strong> delay and a <strong>-<span id="config-penalty-points">--</span> point</strong> penalty.</li>
-														<li> removes <span id="config-cheat-removed">--</span> wrong answers at a cost of <strong>
-																<span id="config-cheat-cost">--</span> seconds</strong>.</li>
-													</ul>
-												</div>
-												<button id="start-button" class="action-button">Start Game</button>
-											</div>
-											<div class="welcome-column">
-												<div id="leaderboard-container">
-													<h3>Hall of Fame</h3>
-													<div id="leaderboard-list-welcome">
-														<p>Loading scores...</p>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- Screen 2: Game Screen -->
-								<div id="game-screen" class="screen">
-									<div id="game-header">
-										<div class="hud-item">Time: <span id="time-left">90</span>s</div>
-										<div class="hud-item">Score: <span id="current-score">0</span>
-										</div>
-										<div class="header-buttons">
-											<button id="cheat-button" class="utility-button">Cheat</button>
-											<button id="quit-button" class="utility-button danger">Quit</button>
-										</div>
-									</div>
-									<div id="visual-container">
-										<img id="question-image" src="" alt="Guess the movie or series">
-											<div id="feedback-message"/>
-										</div>
-										<div id="answer-grid">
+<body>
+  <!-- Sound Toggle Button -->
+  <button id="sound-toggle" class="sound-toggle-btn" tabindex="-1">🔇</button>
+
+  <!-- Screen 1: Welcome Screen (JS will inject Start button into #welcome-container) -->
+  <div id="welcome-screen" class="screen active">
+    <div class="content-box">
+      <div class="welcome-layout">
+        <div class="welcome-column">
+          <h1>Movie & Series Trivia</h1>
+          <p>Guess the title from the image. You have <span id="welcome-duration">--</span> seconds. Good luck!</p>
+          <div id="game-rules">
+            <h3>How to Play</h3>
+            <ul>
+              <li>✅ <strong>+<span id="config-points">--</span> points</strong> for a correct answer.</li>
+              <li>Streaks of <span id="config-streak-req">--</span> grant a <strong>+<span id="config-streak-bonus">--</span> second</strong> time bonus.</li>
+              <li>❌ Each wrong answer adds a <strong><span id="config-penalty-time">--</span>s</strong> delay and a <strong>-<span id="config-penalty-points">--</span> point</strong> penalty.</li>
+              <li>Cheat removes <span id="config-cheat-removed">--</span> wrong answers at a cost of <strong><span id="config-cheat-cost">--</span> seconds</strong>.</li>
+            </ul>
+          </div>
+          <!-- IMPORTANT: no Start button here; game.js will inject it -->
+          <div id="welcome-container"></div>
         </div>
-										<div id="game-footer"/>
-									</div>
-									<!-- Screen 3: Game Over Screen -->
-									<div id="game-over-screen" class="screen">
-										<div class="content-box">
-											<h2 class="final-score-text">Time's Up!</h2>
-											<div class="game-over-layout">
-												<div class="game-over-column">
-													<h3>Your Game Summary</h3>
-													<p>Final Score: <strong id="final-score">0</strong>
-													</p>
-													<p>Cheats Used: <span id="cheats-used-summary">0</span>
-													</p>
-													<div id="summary-details"/>
-													<div class="play-again-container">
-														<button id="play-again-button" class="action-button">Another Game?</button>
-													</div>
-												</div>
-												<div class="game-over-column">
-													<h3>Hall of Fame</h3>
-													<div id="leaderboard-list-gameover"/>
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- Screen 4: Quit Screen -->
-									<div id="exit-screen" class="screen">
-										<div class="content-box">
-											<h2>Game Over</h2>
-											<p>You quit the game with a score of <strong id="exit-score">0</strong>.</p>
-											<button id="play-again-exit-button" class="action-button">Play Again</button>
-										</div>
-									</div>
-									<!-- Modals -->
-									<div id="quit-modal" class="modal-overlay hidden">
-										<div class="modal-content">
-											<h3>Are you sure you want to quit?</h3>
-											<p>Your current score will be lost.</p>
-											<div class="modal-buttons">
-												<button id="quit-confirm-yes" class="action-button danger">Yes, Quit</button>
-												<button id="quit-confirm-no" class="utility-button">No, Continue</button>
-											</div>
-										</div>
-									</div>
-									<div id="highscore-modal" class="modal-overlay hidden">
-										<div class="modal-content">
-											<h3>You made the Hall of Fame!</h3>
-											<p>Enter your name to save your score.</p>
-											<input type="text" id="player-name" placeholder="Enter your name" maxlength="15">
-												<div class="modal-buttons">
-													<button id="save-score-button" class="action-button">Save to Hall of Fame</button>
-													<button id="skip-score-button" class="utility-button">Skip</button>
-												</div>
-											</div>
-										</div>
-										<script src="{{ url_for('static', filename='js/game.js') }}"/>
-									</body>
-								</html>
+        <div class="welcome-column">
+          <div id="leaderboard-container">
+            <h3>Hall of Fame</h3>
+            <div id="leaderboard-list-welcome">
+              <p>Loading scores...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 2: Game Screen -->
+  <div id="game-screen" class="screen">
+    <div id="game-header">
+      <div class="hud-item">Time: <span id="time-left">90</span>s</div>
+      <div class="hud-item">Score: <span id="current-score">0</span></div>
+      <div class="header-buttons">
+        <button id="cheat-button" class="utility-button">Cheat</button>
+        <button id="quit-button" class="utility-button danger">Quit</button>
+      </div>
+    </div>
+    <div id="visual-container">
+      <img id="question-image" src="" alt="Guess the movie or series">
+      <div id="feedback-message"></div>
+    </div>
+    <div id="answer-grid"></div>
+    <div id="game-footer"></div>
+  </div>
+
+  <!-- Screen 3: Game Over Screen -->
+  <div id="game-over-screen" class="screen">
+    <div class="content-box">
+      <h2 class="final-score-text">Time's Up!</h2>
+      <div class="game-over-layout">
+        <div class="game-over-column">
+          <h3>Your Game Summary</h3>
+          <p>Final Score: <strong id="final-score">0</strong></p>
+          <p>Cheats Used: <span id="cheats-used-summary">0</span></p>
+          <div id="summary-details"></div>
+          <div class="play-again-container">
+            <button id="play-again-button" class="action-button">Another Game?</button>
+          </div>
+        </div>
+        <div class="game-over-column">
+          <h3>Hall of Fame</h3>
+          <div id="leaderboard-list-gameover"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 4: Quit Screen -->
+  <div id="exit-screen" class="screen">
+    <div class="content-box">
+      <h2>Game Over</h2>
+      <p>You quit the game with a score of <strong id="exit-score">0</strong>.</p>
+      <button id="play-again-exit-button" class="action-button">Play Again</button>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div id="quit-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h3>Are you sure you want to quit?</h3>
+      <p>Your current score will be lost.</p>
+      <div class="modal-buttons">
+        <button id="quit-confirm-yes" class="action-button danger">Yes, Quit</button>
+        <button id="quit-confirm-no" class="utility-button">No, Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="highscore-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h3>You made the Hall of Fame!</h3>
+      <p>Enter your name to save your score.</p>
+      <input type="text" id="player-name" placeholder="Enter your name" maxlength="15">
+      <div class="modal-buttons">
+        <button id="save-score-button" class="action-button">Save to Hall of Fame</button>
+        <button id="skip-score-button" class="utility-button">Skip</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Correctly closed script tag -->
+  <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>
