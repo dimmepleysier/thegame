@@ -34,7 +34,9 @@
     font-size: 0.9em;
     min-height: 50px;
 }
+
 .action-button:focus, .utility-button:focus, .answer-btn:focus {
-    outline: 4px solid var(--gold-color);
-    box-shadow: 0 0 15px var(--gold-color);
+    outline: 5px solid yellow; /* Changed to yellow for high contrast */
+    transform: scale(1.05); /* Make the button slightly larger */
+    box-shadow: 0 0 20px yellow;
 }

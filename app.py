@@ -14,7 +14,7 @@ DB_CONFIG = {
     'database': 'thegame',
     'cursorclass': pymysql.cursors.DictCursor
 }   
-
+    
 
 @app.route('/')
 def home():

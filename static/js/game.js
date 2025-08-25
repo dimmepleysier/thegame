@@ -407,3 +407,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initializeApp();
 });
+
+window.onload = () => {
+    const startButton = document.getElementById('start-button');
+    if (startButton) {
+        startButton.focus();
+        // As a final measure, we can also scroll it into view
+        startButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+};
