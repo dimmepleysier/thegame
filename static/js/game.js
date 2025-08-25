@@ -25,20 +25,25 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 	// in static/js/game.js
 
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // ... (your existing DOM elements and buttons objects) ...
 
-    // --- NEW: Set Initial Focus with a slight delay ---
-    // The timeout gives the WebView a moment to render before we set focus.
-    setTimeout(() => {
-        buttons.start.focus();
-    }, 100); // 100 milliseconds
+    // --- NEW: A robust function to set initial focus ---
+    function setInitialFocus() {
+        // Find the button we want to focus on
+        const startButton = document.getElementById('start-button');
+        if (startButton) {
+            startButton.focus();
+        }
+    }
+
+    // Use requestAnimationFrame to wait for the page to be ready
+    requestAnimationFrame(setInitialFocus);
     // ----------------------------------------------------
 
-
     // ... (rest of your script) ...
-
 });
     const displays = {
         timeLeft: document.getElementById('time-left'),
