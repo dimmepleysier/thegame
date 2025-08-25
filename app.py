@@ -9,7 +9,7 @@ app = Flask(__name__)
 # --- Database Connection Details ---
 DB_CONFIG = {
     'host': os.environ.get('DB_HOST'),
-    'user': os.environ.get('DB_USER2'),
+    'user': os.environ.get('DB_USER'),
     'password': os.environ.get('DB_PASSWORD'),
     'database': 'thegame',
     'cursorclass': pymysql.cursors.DictCursor

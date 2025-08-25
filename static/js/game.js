@@ -18,33 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
         quit: document.getElementById('quit-button'),
         quitConfirmYes: document.getElementById('quit-confirm-yes'),
         quitConfirmNo: document.getElementById('quit-confirm-no'),
-        playAgain: document.getElementById('play-again-button'),nnn
+        playAgain: document.getElementById('play-again-button'),
         playAgainExit: document.getElementById('play-again-exit-button'),
         soundToggle: document.getElementById('sound-toggle'),
     };
-	
-	// in static/js/game.js
-
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    // ... (your existing DOM elements and buttons objects) ...
-
-    // --- NEW: A robust function to set initial focus ---
-    function setInitialFocus() {
-        // Find the button we want to focus on
-        const startButton = document.getElementById('start-button');
-        if (startButton) {
-            startButton.focus();
-        }
-    }
-
-    // Use requestAnimationFrame to wait for the page to be ready
-    requestAnimationFrame(setInitialFocus);
-    // ----------------------------------------------------
-
-    // ... (rest of your script) ...
-});
     const displays = {
         timeLeft: document.getElementById('time-left'),
         currentScore: document.getElementById('current-score'),
@@ -62,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         highscoreModal: document.getElementById('highscore-modal'),
         welcomeDuration: document.getElementById('welcome-duration'),
     };
-    
+
     // --- 2. Game State Variables ---
     let score = 0;
     let timeLeft = 0;
@@ -83,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 3. Sound Functions ---
     function unlockAudio() {
         if (audioUnlocked) return;
-        console.log("Unlocking audio context for all sounds...");
         Object.values(sounds).forEach(sound => {
             sound.play().then(() => {
                 sound.pause();
@@ -93,57 +69,68 @@ document.addEventListener('DOMContentLoaded', () => {
         audioUnlocked = true;
     }
 
-    function playSound(sound) { if (!isMuted && sound) { sound.currentTime = 0; sound.play().catch(error => console.error(`Sound playback failed: ${error.message}`)); } }
-    function stopSound(sound) { if (sound) { sound.pause(); sound.currentTime = 0; } }
-// --- NEW: Main Event Listener (Event Delegation) ---
-document.body.addEventListener('click', (event) => {
-    // Find the closest parent element that has an ID
-    const target = event.target.closest('[id]');
-    if (!target) return; // If nothing with an ID was clicked, do nothing
-
-    // Call the correct function based on the button's ID
-    switch (target.id) {
-        case 'start-button':
-        case 'play-again-button': // Combined play again buttons
-        case 'play-again-exit-button':
-            startGame();
-            break;
-        case 'cheat-button':
-            useCheat();
-            break;
-        case 'save-score-button':
-            saveScore();
-            break;
-        case 'skip-score-button':
-            showGameOverScreen();
-            break;
-        case 'quit-button':
-            displays.quitModal.classList.remove('hidden');
-            break;
-        case 'quit-confirm-no-button':
-            displays.quitModal.classList.add('hidden');
-            break;
-        case 'quit-confirm-yes-button':
-            quitGame();
-            break;
-        case 'sound-toggle-button':
-            toggleMute();
-            break;
+    function playSound(sound) {
+        if (!isMuted && sound) {
+            sound.currentTime = 0;
+            sound.play().catch(err => console.error(`Sound playback failed: ${err.message}`));
+        }
+    }
+    function stopSound(sound) {
+        if (sound) {
+            sound.pause();
+            sound.currentTime = 0;
+        }
     }
 
-    // Special case for answer buttons since they share a class, not an ID
-    if (event.target.classList.contains('answer-btn')) {
-        handleAnswerClick(event);
-    }
-});
+    // --- 4. Main Event Listener (Event Delegation) ---
+    document.body.addEventListener('click', (event) => {
+        const target = event.target.closest('[id]');
+        if (!target) return;
+
+        switch (target.id) {
+            case 'start-button':
+            case 'play-again-button':
+            case 'play-again-exit-button':
+                startGame();
+                break;
+            case 'cheat-button':
+                useCheat();
+                break;
+            case 'save-score-button':
+                saveScore();
+                break;
+            case 'skip-score-button':
+                showGameOverScreen();
+                break;
+            case 'quit-button':
+                displays.quitModal.classList.remove('hidden');
+                break;
+            case 'quit-confirm-no':
+                displays.quitModal.classList.add('hidden');
+                break;
+            case 'quit-confirm-yes':
+                quitGame();
+                break;
+            case 'sound-toggle':
+                toggleMute();
+                break;
+        }
+
+        if (event.target.classList.contains('answer-btn')) {
+            handleAnswerClick(event);
+        }
+    });
 
     // --- 5. Core Game Logic ---
     function switchScreen(screenName) {
         currentScreen = screenName;
         Object.values(screens).forEach(screen => screen.classList.remove('active'));
         screens[screenName].classList.add('active');
-        if (['welcome', 'gameOver', 'exit'].includes(screenName)) { playSound(sounds.lobby); } 
-        else { stopSound(sounds.lobby); }
+        if (['welcome', 'gameOver', 'exit'].includes(screenName)) {
+            playSound(sounds.lobby);
+        } else {
+            stopSound(sounds.lobby);
+        }
     }
 
     function toggleMute() {
@@ -152,8 +139,9 @@ document.body.addEventListener('click', (event) => {
         if (!isMuted) {
             unlockAudio();
             if (['welcome', 'gameOver', 'exit'].includes(currentScreen)) playSound(sounds.lobby);
-        } 
-        else { Object.values(sounds).forEach(stopSound); }
+        } else {
+            Object.values(sounds).forEach(stopSound);
+        }
     }
 
     function startGame() {
@@ -179,14 +167,8 @@ document.body.addEventListener('click', (event) => {
         timeLeft--;
         displays.timeLeft.textContent = timeLeft;
 
-        if (timeLeft === 5) {
-            console.log("Attempting to play end sound...");
-            playSound(sounds.end);
-        }
-
-        if (timeLeft <= 0) {
-            endGame();
-        }
+        if (timeLeft === 5) playSound(sounds.end);
+        if (timeLeft <= 0) endGame();
     }
 
     async function fetchAndDisplayLeaderboard() {
@@ -195,7 +177,10 @@ document.body.addEventListener('click', (event) => {
             leaderboardData = await response.json();
             const renderTarget = (listElement) => {
                 listElement.innerHTML = '';
-                if (leaderboardData.length === 0) { listElement.innerHTML = '<p>No scores yet. Be the first!</p>'; return; }
+                if (leaderboardData.length === 0) {
+                    listElement.innerHTML = '<p>No scores yet. Be the first!</p>';
+                    return;
+                }
                 leaderboardData.forEach(entry => {
                     const item = document.createElement('div');
                     item.className = 'leaderboard-item';
@@ -218,10 +203,13 @@ document.body.addEventListener('click', (event) => {
             const response = await fetch(`/get_question?seen_ids=${seenQuestionIds.join(',')}`);
             if (!response.ok) throw new Error(`Server error: ${response.statusText}`);
             const data = await response.json();
-            if (data.error) { if (data.error === "No more questions available") endGame(); throw new Error(data.error); }
+            if (data.error) {
+                if (data.error === "No more questions available") endGame();
+                throw new Error(data.error);
+            }
             seenQuestionIds.push(data.id);
             currentCorrectAnswer = data.correct_answer;
-            gameHistory[data.id] = { correctAnswer: data.correct_answer, tries: 0, answeredCorrectly: false, };
+            gameHistory[data.id] = { correctAnswer: data.correct_answer, tries: 0, answeredCorrectly: false };
             renderQuestion(data);
         } catch (error) {
             console.error("Failed to fetch question:", error);
@@ -297,7 +285,8 @@ document.body.addEventListener('click', (event) => {
         timeLeft -= config.cheatCost;
         displays.timeLeft.textContent = timeLeft;
         cheatsUsed++;
-        const wrongButtons = Array.from(displays.answerGrid.querySelectorAll('.answer-btn')).filter(btn => btn.textContent !== currentCorrectAnswer);
+        const wrongButtons = Array.from(displays.answerGrid.querySelectorAll('.answer-btn'))
+            .filter(btn => btn.textContent !== currentCorrectAnswer);
         wrongButtons.sort(() => 0.5 - Math.random());
         for (let i = 0; i < config.cheatAnswersRemoved && i < wrongButtons.length; i++) {
             wrongButtons[i].disabled = true;
@@ -374,7 +363,11 @@ document.body.addEventListener('click', (event) => {
         buttons.saveScore.disabled = true;
         buttons.saveScore.textContent = 'Saving...';
         try {
-            const response = await fetch('/submit_score', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ playerName, score: finalScore }), });
+            const response = await fetch('/submit_score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ playerName, score: finalScore }),
+            });
             if (!response.ok) throw new Error('Failed to save score.');
             const result = await response.json();
             if (result.success) {
@@ -389,58 +382,48 @@ document.body.addEventListener('click', (event) => {
         }
     }
 
-    // --- Initial Load Function ---
-   async function initializeApp() {
-  try {
-    // Use the injected CONFIG_URL from index.html
-    const response = await fetch(window.CONFIG_URL);
-    if (!response.ok) throw new Error('config.json not found');
-    config = await response.json();
+    // --- 6. Initialize ---
+    async function initializeApp() {
+        try {
+            const response = await fetch(window.CONFIG_URL);
+            if (!response.ok) throw new Error('config.json not found');
+            config = await response.json();
 
-    const configSpans = {
-      points: document.getElementById('config-points'),
-      streakReq: document.getElementById('config-streak-req'),
-      streakBonus: document.getElementById('config-streak-bonus'),
-      penaltyTime: document.getElementById('config-penalty-time'),
-      penaltyPoints: document.getElementById('config-penalty-points'),
-      cheatRemoved: document.getElementById('config-cheat-removed'),
-      cheatCost: document.getElementById('config-cheat-cost'),
-      cheatCostBtn: document.getElementById('config-cheat-cost-btn'),
-    };
+            const configSpans = {
+                points: document.getElementById('config-points'),
+                streakReq: document.getElementById('config-streak-req'),
+                streakBonus: document.getElementById('config-streak-bonus'),
+                penaltyTime: document.getElementById('config-penalty-time'),
+                penaltyPoints: document.getElementById('config-penalty-points'),
+                cheatRemoved: document.getElementById('config-cheat-removed'),
+                cheatCost: document.getElementById('config-cheat-cost'),
+                cheatCostBtn: document.getElementById('config-cheat-cost-btn'),
+            };
 
-    Object.keys(config.sounds).forEach(key => {
-      sounds[key] = new Audio(config.sounds[key]);
-    });
-    if (sounds.lobby) sounds.lobby.loop = true;
+            Object.keys(config.sounds).forEach(key => {
+                sounds[key] = new Audio(config.sounds[key]);
+            });
+            if (sounds.lobby) sounds.lobby.loop = true;
 
-    displays.timeLeft.textContent = config.gameDuration;
-    displays.welcomeDuration.textContent = config.gameDuration;
-    configSpans.points.textContent = config.pointsPerAnswer;
-    configSpans.streakReq.textContent = config.streakRequirement;
-    configSpans.streakBonus.textContent = config.streakBonus;
-    configSpans.penaltyTime.textContent = config.penaltyPerWrongSeconds;
-    configSpans.penaltyPoints.textContent = config.penaltyPerWrongPoints;
-    configSpans.cheatRemoved.textContent = config.cheatAnswersRemoved;
-    configSpans.cheatCost.textContent = config.cheatCost;
-    configSpans.cheatCostBtn.textContent = config.cheatCost;
+            displays.timeLeft.textContent = config.gameDuration;
+            displays.welcomeDuration.textContent = config.gameDuration;
+            configSpans.points.textContent = config.pointsPerAnswer;
+            configSpans.streakReq.textContent = config.streakRequirement;
+            configSpans.streakBonus.textContent = config.streakBonus;
+            configSpans.penaltyTime.textContent = config.penaltyPerWrongSeconds;
+            configSpans.penaltyPoints.textContent = config.penaltyPerWrongPoints;
+            configSpans.cheatRemoved.textContent = config.cheatAnswersRemoved;
+            configSpans.cheatCost.textContent = config.cheatCost;
+            configSpans.cheatCostBtn.textContent = config.cheatCost;
 
-    await fetchAndDisplayLeaderboard();
-    switchScreen('welcome');
+            await fetchAndDisplayLeaderboard();
+            switchScreen('welcome');
 
-  } catch (error) {
-    console.error("Fatal Error: Could not load game configuration.", error);
-    document.body.innerHTML = `<h1 style="color: red; text-align: center;">Error: Could not load game config.json. Please check the file and refresh.</h1>`;
-  }
-}
+        } catch (error) {
+            console.error("Fatal Error: Could not load game configuration.", error);
+            document.body.innerHTML = `<h1 style="color: red; text-align: center;">Error: Could not load game config.json. Please check the file and refresh.</h1>`;
+        }
+    }
 
     initializeApp();
 });
-
-window.onload = () => {
-    const startButton = document.getElementById('start-button');
-    if (startButton) {
-        startButton.focus();
-        // As a final measure, we can also scroll it into view
-        startButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-};
