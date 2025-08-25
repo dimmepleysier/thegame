@@ -20,7 +20,7 @@
   <!-- Sound Toggle Button -->
   <button id="sound-toggle" class="sound-toggle-btn" tabindex="-1">🔇</button>
 
-  <!-- Screen 1: Welcome Screen (JS will inject Start button into #welcome-container) -->
+  <!-- Screen 1: Welcome Screen -->
   <div id="welcome-screen" class="screen active">
     <div class="content-box">
       <div class="welcome-layout">
@@ -36,7 +36,6 @@
               <li>Cheat removes <span id="config-cheat-removed">--</span> wrong answers at a cost of <strong><span id="config-cheat-cost">--</span> seconds</strong>.</li>
             </ul>
           </div>
-          <!-- IMPORTANT: no Start button here; game.js will inject it -->
           <div id="welcome-container"></div>
         </div>
         <div class="welcome-column">
@@ -124,7 +123,10 @@
     </div>
   </div>
 
-  <!-- Correctly closed script tag -->
+  <!-- Inject correct config.json URL -->
+  <script>
+    window.CONFIG_URL = "{{ url_for('static', filename='config.json') }}";
+  </script>
   <script src="{{ url_for('static', filename='js/game.js') }}"></script>
 </body>
 </html>

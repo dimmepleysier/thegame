@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         quit: document.getElementById('quit-button'),
         quitConfirmYes: document.getElementById('quit-confirm-yes'),
         quitConfirmNo: document.getElementById('quit-confirm-no'),
-        playAgain: document.getElementById('play-again-button'),
+        playAgain: document.getElementById('play-again-button'),nnn
         playAgainExit: document.getElementById('play-again-exit-button'),
         soundToggle: document.getElementById('sound-toggle'),
     };
@@ -390,48 +390,48 @@ document.body.addEventListener('click', (event) => {
     }
 
     // --- Initial Load Function ---
-    async function initializeApp() {
-        try {
-            const response = await fetch('/static/config.json');
-            if (!response.ok) throw new Error('config.json not found');
-            config = await response.json();
+   async function initializeApp() {
+  try {
+    // Use the injected CONFIG_URL from index.html
+    const response = await fetch(window.CONFIG_URL);
+    if (!response.ok) throw new Error('config.json not found');
+    config = await response.json();
 
-            const configSpans = {
-                points: document.getElementById('config-points'),
-                streakReq: document.getElementById('config-streak-req'),
-                streakBonus: document.getElementById('config-streak-bonus'),
-                penaltyTime: document.getElementById('config-penalty-time'),
-                penaltyPoints: document.getElementById('config-penalty-points'),
-                cheatRemoved: document.getElementById('config-cheat-removed'),
-                cheatCost: document.getElementById('config-cheat-cost'),
-                cheatCostBtn: document.getElementById('config-cheat-cost-btn'),
-            };
+    const configSpans = {
+      points: document.getElementById('config-points'),
+      streakReq: document.getElementById('config-streak-req'),
+      streakBonus: document.getElementById('config-streak-bonus'),
+      penaltyTime: document.getElementById('config-penalty-time'),
+      penaltyPoints: document.getElementById('config-penalty-points'),
+      cheatRemoved: document.getElementById('config-cheat-removed'),
+      cheatCost: document.getElementById('config-cheat-cost'),
+      cheatCostBtn: document.getElementById('config-cheat-cost-btn'),
+    };
 
-            Object.keys(config.sounds).forEach(key => {
-                sounds[key] = new Audio(config.sounds[key]);
-            });
-            if (sounds.lobby) sounds.lobby.loop = true;
+    Object.keys(config.sounds).forEach(key => {
+      sounds[key] = new Audio(config.sounds[key]);
+    });
+    if (sounds.lobby) sounds.lobby.loop = true;
 
-            displays.timeLeft.textContent = config.gameDuration;
-            displays.welcomeDuration.textContent = config.gameDuration;
-            configSpans.points.textContent = config.pointsPerAnswer;
-            configSpans.streakReq.textContent = config.streakRequirement;
-            configSpans.streakBonus.textContent = config.streakBonus;
-            configSpans.penaltyTime.textContent = config.penaltyPerWrongSeconds;
-            configSpans.penaltyPoints.textContent = config.penaltyPerWrongPoints;
-            configSpans.cheatRemoved.textContent = config.cheatAnswersRemoved;
-            configSpans.cheatCost.textContent = config.cheatCost;
-            configSpans.cheatCostBtn.textContent = config.cheatCost;
+    displays.timeLeft.textContent = config.gameDuration;
+    displays.welcomeDuration.textContent = config.gameDuration;
+    configSpans.points.textContent = config.pointsPerAnswer;
+    configSpans.streakReq.textContent = config.streakRequirement;
+    configSpans.streakBonus.textContent = config.streakBonus;
+    configSpans.penaltyTime.textContent = config.penaltyPerWrongSeconds;
+    configSpans.penaltyPoints.textContent = config.penaltyPerWrongPoints;
+    configSpans.cheatRemoved.textContent = config.cheatAnswersRemoved;
+    configSpans.cheatCost.textContent = config.cheatCost;
+    configSpans.cheatCostBtn.textContent = config.cheatCost;
 
+    await fetchAndDisplayLeaderboard();
+    switchScreen('welcome');
 
-            await fetchAndDisplayLeaderboard();
-            switchScreen('welcome');
-
-        } catch (error) {
-            console.error("Fatal Error: Could not load game configuration.", error);
-            document.body.innerHTML = `<h1 style="color: red; text-align: center;">Error: Could not load game config.json. Please check the file and refresh.</h1>`;
-        }
-    }
+  } catch (error) {
+    console.error("Fatal Error: Could not load game configuration.", error);
+    document.body.innerHTML = `<h1 style="color: red; text-align: center;">Error: Could not load game config.json. Please check the file and refresh.</h1>`;
+  }
+}
 
     initializeApp();
 });
