@@ -25,21 +25,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 	// in static/js/game.js
 
-	document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
-    // --- DOM Elements ---
-    // ... (your existing screens and displays objects) ...
-    const buttons = {
-        start: document.getElementById('start-button'),
-        // ... (your other buttons) ...
-    };
+    // ... (your existing DOM elements and buttons objects) ...
 
-    // --- NEW: Set Initial Focus ---
-    buttons.start.focus();
-    // -----------------------------
+    // --- NEW: Set Initial Focus with a slight delay ---
+    // The timeout gives the WebView a moment to render before we set focus.
+    setTimeout(() => {
+        buttons.start.focus();
+    }, 100); // 100 milliseconds
+    // ----------------------------------------------------
 
 
-    // --- Game State Variables ---
     // ... (rest of your script) ...
 
 });
