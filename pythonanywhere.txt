@@ -1,0 +1,4 @@
+pw (login & mysql) : V#iUeaP-xDXvR3
+Database host address:acotedupetitprince.mysql.pythonanywhere-services.com
+Username:acotedupetitprin
+DB name: acotedupetitprin$thegame

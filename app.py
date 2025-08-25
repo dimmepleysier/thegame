@@ -9,17 +9,23 @@ app = Flask(__name__)
 # --- Database Connection Details ---
 DB_CONFIG = {
     'host': os.environ.get('DB_HOST'),
-    'user': os.environ.get('DB_USER'),
+    'user': os.environ.get('DB_USER2'),
     'password': os.environ.get('DB_PASSWORD'),
-    'database': os.environ.get('DB_NAME'),
+    'database': 'thegame',
     'cursorclass': pymysql.cursors.DictCursor
-}
+}   
 
-# --- Main Route ---
+
 @app.route('/')
 def home():
-    """Renders the main game page."""
-    return render_template('index.html')
+    # Check for a URL parameter like "/?platform=tv"
+    # It will default to 'web' if the parameter is not present.
+    platform = request.args.get('platform', 'web')
+    
+    # Pass the platform variable to the HTML template when rendering
+    return render_template('index.html', platform=platform)
+
+# ... (rest of your app routes) ...
 
 # --- API Routes ---
 

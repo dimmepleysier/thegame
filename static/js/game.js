@@ -22,6 +22,27 @@ document.addEventListener('DOMContentLoaded', () => {
         playAgainExit: document.getElementById('play-again-exit-button'),
         soundToggle: document.getElementById('sound-toggle'),
     };
+	
+	// in static/js/game.js
+
+	document.addEventListener('DOMContentLoaded', () => {
+
+    // --- DOM Elements ---
+    // ... (your existing screens and displays objects) ...
+    const buttons = {
+        start: document.getElementById('start-button'),
+        // ... (your other buttons) ...
+    };
+
+    // --- NEW: Set Initial Focus ---
+    buttons.start.focus();
+    // -----------------------------
+
+
+    // --- Game State Variables ---
+    // ... (rest of your script) ...
+
+});
     const displays = {
         timeLeft: document.getElementById('time-left'),
         currentScore: document.getElementById('current-score'),

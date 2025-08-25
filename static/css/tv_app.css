@@ -1,0 +1,40 @@
+/* --- Game Screen TV Adjustments --- */
+
+/* Style the header to hold the HUD and buttons */
+#game-header {
+    display: flex;
+    justify-content: space-between; /* Pushes HUD left and buttons right */
+    align-items: center;         /* Vertically aligns everything nicely */
+}
+
+/* Style the container for the new buttons in the header */
+.header-buttons {
+    display: flex;
+    gap: 10px; /* Adds a little space between the buttons */
+}
+
+/* Make the buttons in the header a bit smaller */
+.header-buttons .utility-button {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+/* --- Answer Grid TV Adjustments --- */
+
+/* Convert the answer grid into a single, easy-to-navigate column */
+#answer-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Reduce space between buttons */
+}
+
+/* Make answer buttons a bit smaller */
+.answer-btn {
+    padding: 12px 8px;
+    font-size: 0.9em;
+    min-height: 50px;
+}
+.action-button:focus, .utility-button:focus, .answer-btn:focus {
+    outline: 4px solid var(--gold-color);
+    box-shadow: 0 0 15px var(--gold-color);
+}
